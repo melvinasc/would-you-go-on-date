@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will you go on a date with me? 🧸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffe4f0, #fff0f5, #fce4ec);
+      font-family: 'Baloo 2', cursive;
+    }
+
+    .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* ASK SCREEN */
+    #ask-view { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+    .bear { font-size: 80px; margin-bottom: 0.4rem; animation: bounce 2s ease-in-out infinite; }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .question {
+      font-family: 'Baloo 2', cursive;
+      font-size: 28px;
+      font-weight: 800;
+      color: #d81b60;
+      margin-bottom: 1.75rem;
+      line-height: 1.35;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 54px;
+      width: 100%;
+    }
+
+    #yes-btn {
+      padding: 12px 34px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #f48fb1, #e91e8c);
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px #f48fb155;
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+      z-index: 2;
+    }
+    #yes-btn:hover { transform: scale(1.08); box-shadow: 0 6px 22px #f48fb188; }
+
+    #no-btn {
+      padding: 11px 28px;
+      border-radius: 999px;
+      border: 2px solid #f48fb1;
+      background: #fff0f5;
+      color: #c2185b;
+      font-family: 'Baloo 2', cursive;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      position: fixed;
+      white-space: nowrap;
+      transition: font-size 0.2s, opacity 0.3s;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .hearts { font-size: 14px; color: #f48fb1; margin-top: 0.5rem; letter-spacing: 4px; }
+
+    /* SUCCESS SCREEN */
+    #success-view { display: none; flex-direction: column; align-items: center; text-align: center; gap: 0; }
+
+    .success-bear { font-size: 72px; animation: pop-in 0.5s ease-out; }
+    @keyframes pop-in {
+      0% { transform: scale(0) rotate(-15deg); }
+      70% { transform: scale(1.2) rotate(5deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .success-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 26px;
+      color: #d81b60;
+      margin: 0.6rem 0 1.25rem;
+    }
+
+    .date-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .date-card {
+      background: #fff0f5;
+      border: 1.5px solid #f8bbd0;
+      border-radius: 18px;
+      padding: 13px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: slide-in 0.4s ease both;
+    }
+    .date-card:nth-child(1) { animation-delay: 0.1s; }
+    .date-card:nth-child(2) { animation-delay: 0.25s; }
+    .date-card:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-icon {
+      font-size: 28px;
+      width: 46px;
+      height: 46px;
+      background: #fce4ec;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-text { text-align: left; }
+    .card-label {
+      font-family: 'Baloo 2', cursive;
+      font-size: 11px;
+      font-weight: 700;
+      color: #f06292;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      line-height: 1;
+    }
+    .card-value {
+      font-family: 'Baloo 2', cursive;
+      font-size: 17px;
+      font-weight: 800;
+      color: #c2185b;
+      line-height: 1.2;
+    }
+
+    .confetti-row { font-size: 22px; margin-top: 1rem; letter-spacing: 5px; animation: pop-in 0.5s ease 0.6s both; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="ask-view">
+      <div class="bear" id="bear-emoji">🧸</div>
+      <div class="question" id="q-text">Will you go on a date with me?</div>
+      <div class="btn-row" id="btn-row">
+        <button id="yes-btn" onclick="sayYes()">🩷 Yes!</button>
+        <button id="no-btn" onmouseenter="runAway()" ontouchstart="runAway(event)">Nope</button>
+      </div>
+      <div class="hearts">♡ ♡ ♡</div>
+    </div>
+
+    <div id="success-view">
+      <div class="success-bear">🧸</div>
+      <div class="success-title">Yay!! Can't wait! 🩷</div>
+      <div class="date-cards">
+        <div class="date-card">
+          <div class="card-icon">📅</div>
+          <div class="card-text">
+            <div class="card-label">When</div>
+            <div class="card-value">This weekend</div>
+          </div>
+        </div>
+        <div class="date-card">
+          <div class="card-icon">🌟</div>
+          <div class="card-text">
+            <div class="card-label">Plan</div>
+            <div class="card-value">Dinner & stargazing</div>
+          </div>
+        </div>
+        <div class="date-card">
+          <div class="card-icon">💐</div>
+          <div class="card-text">
+            <div class="card-label">Promise</div>
+            <div class="card-value">I'll bring flowers</div>
+          </div>
+        </div>
+      </div>
+      <div class="confetti-row">🌸 🩷 ✨ 🌸</div>
+    </div>
+  </div>
+
+  <script>
+    let noCount = 0;
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const qText = document.getElementById('q-text');
+    const bear = document.getElementById('bear-emoji');
+
+    const messages = [
+      "Will you go on a date with me?",
+      "Are you sure? 🥺",
+      "Pretty please? 👉👈",
+      "I'll bring snacks too...",
+      "The teddy bear is sad now 😢",
+      "Come onnn! 🧸💕",
+      "You can't escape forever!",
+      "Yes button is right there...",
+      "Last chance, I promise 🌸",
+      "Okay fine — YES it is! 😄"
+    ];
+
+    const bears = ["🧸", "🥺🧸", "😢🧸", "😭🧸", "🧸💔", "🧸🌸"];
+
+    function placeNoBtn() {
+      const row = document.getElementById('btn-row');
+      const rect = row.getBoundingClientRect();
+      noBtn.style.left = (rect.right + 12) + 'px';
+      noBtn.style.top = rect.top + 'px';
+    }
+    window.addEventListener('load', placeNoBtn);
+
+    function runAway(e) {
+      if (e) e.preventDefault();
+      noCount++;
+      if (noCount < messages.length) qText.textContent = messages[noCount];
+      if (noCount < bears.length) bear.textContent = bears[noCount];
+
+      const newSize = Math.min(18 + noCount * 2.5, 30);
+      yesBtn.style.fontSize = newSize + 'px';
+      yesBtn.style.padding = `${12 + noCount * 1.5}px ${34 + noCount * 5}px`;
+
+      const margin = 60;
+      const btnW = noBtn.offsetWidth || 100;
+      const btnH = noBtn.offsetHeight || 44;
+      const maxX = window.innerWidth - btnW - margin;
+      const maxY = window.innerHeight - btnH - margin;
+      const rx = Math.floor(Math.random() * Math.max(maxX - margin, 50)) + margin;
+      const ry = Math.floor(Math.random() * Math.max(maxY - margin, 50)) + margin;
+      noBtn.style.left = rx + 'px';
+      noBtn.style.top = ry + 'px';
+
+      if (noCount >= 5) {
+        noBtn.style.fontSize = Math.max(17 - (noCount - 4) * 2, 9) + 'px';
+        noBtn.style.padding = '8px 16px';
+      }
+      if (noCount >= 9) noBtn.style.opacity = '0';
+      if (noCount >= 10) noBtn.style.display = 'none';
+    }
+
+    function sayYes() {
+      noBtn.style.display = 'none';
+      document.getElementById('ask-view').style.display = 'none';
+      const s = document.getElementById('success-view');
+      s.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
